@@ -1,0 +1,163 @@
+﻿name: WiSave.Income
+
+services:
+  wisave.income.webapi:
+    image: wisave.income.webapi
+    build:
+      context: .
+      dockerfile: src/WiSave.Income.WebApi/Dockerfile
+    ports:
+      - "5001:5001"   # HTTP
+      - "5002:5002"   # HTTPS
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5002;http://+:5001
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/wisave-income-webapi.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=wisave123
+      - ConnectionStrings__GeneralDb=Host=wisave.income.general.db;Database=wisave_income;Username=postgres;Password=postgres123
+      - ConnectionStrings__ProjectionsDb=mongodb://mongo:mongo123@wisave.income.projections.db:27017/wisave_income_projections
+      - RabbitMQ__Host=wisave-rabbitmq
+      - RabbitMQ__VirtualHost=incomes
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    volumes:
+      - ./certs:/https:ro
+    networks:
+      - wisave-network
+      - income-general-network
+      - income-projections-network
+    depends_on:
+      - wisave.income.general.db
+      - wisave.income.projections.db
+
+  wisave.income.worker.domain:
+    image: wisave.income.worker.domain
+    build:
+      context: .
+      dockerfile: src/WiSave.Income.Worker.Domain/Dockerfile
+    environment:
+      - ConnectionStrings__GeneralDb=Host=wisave.income.general.db;Database=wisave_income;Username=postgres;Password=postgres123
+      - ConnectionStrings__EventStoreDb=esdb://wisave.income.eventstore.db:2113?tls=false
+      - RabbitMQ__Host=wisave-rabbitmq
+      - RabbitMQ__VirtualHost=incomes
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    networks:
+      - wisave-network
+      - income-general-network
+      - income-eventstore-network
+    depends_on:
+      wisave.income.eventstore.db:
+        condition: service_healthy
+      wisave.income.general.db:
+        condition: service_healthy
+
+  wisave.income.worker.projections:
+    image: wisave.income.worker.projections
+    build:
+      context: .
+      dockerfile: src/WiSave.Income.Worker.Projections/Dockerfile
+    environment:
+      - ConnectionStrings__GeneralDb=Host=wisave.income.general.db;Database=wisave_income;Username=postgres;Password=postgres123
+      - ConnectionStrings__ProjectionsDb=mongodb://mongo:mongo123@wisave.income.projections.db:27017/wisave_income_projections
+      - RabbitMQ__Host=wisave-rabbitmq
+      - RabbitMQ__VirtualHost=incomes
+      - RabbitMQ__Username=guest
+      - RabbitMQ__Password=guest
+    networks:
+      - wisave-network
+      - income-general-network
+      - income-projections-network
+    depends_on:
+      - wisave.income.general.db
+      - wisave.income.projections.db
+
+  # Database Services
+  wisave.income.general.db:
+    image: postgres:16-alpine
+    container_name: wisave-income-postgres
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: wisave_income
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+    volumes:
+      - type: volume
+        source: income-postgres-data
+        target: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - income-general-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wisave.income.projections.db:
+    image: mongo:7
+    container_name: wisave-income-mongo
+    platform: linux/amd64
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo123
+      MONGO_INITDB_DATABASE: wisave_income_projections
+    volumes:
+      - type: volume
+        source: income-mongo-data
+        target: /data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - income-projections-network
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  wisave.income.eventstore.db:
+    image: docker.kurrent.io/kurrent-latest/kurrentdb:latest
+    container_name: wisave-income-kurrentdb
+    platform: linux/amd64
+    environment:
+      - KURRENTDB_CLUSTER_SIZE=1
+      - KURRENTDB_RUN_PROJECTIONS=All
+      - KURRENTDB_START_STANDARD_PROJECTIONS=true
+      - KURRENTDB_NODE_PORT=2113
+      - KURRENTDB_INSECURE=true
+      - KURRENTDB_ENABLE_ATOM_PUB_OVER_HTTP=true
+    ports:
+      - "2113:2113"
+    volumes:
+      - type: volume
+        source: income-kurrentdb-data
+        target: /var/lib/kurrentdb
+      - type: volume
+        source: income-kurrentdb-logs
+        target: /var/log/kurrentdb
+    networks:
+      - income-eventstore-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:2113/health/live || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+volumes:
+  income-postgres-data:
+  income-mongo-data:
+  income-kurrentdb-data:
+  income-kurrentdb-logs:
+
+networks:
+  wisave-network:
+    external: true
+  income-general-network:
+    driver: bridge
+  income-projections-network:
+    driver: bridge
+  income-eventstore-network:
+    driver: bridge
