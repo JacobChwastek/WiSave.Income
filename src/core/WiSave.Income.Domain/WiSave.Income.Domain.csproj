@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\shared\WiSave.Income.Contracts\WiSave.Income.Contracts.csproj" />
+    </ItemGroup>
+
 </Project>

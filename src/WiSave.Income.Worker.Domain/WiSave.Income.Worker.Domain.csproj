@@ -17,4 +17,8 @@
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\core\WiSave.Income.Infrastructure\WiSave.Income.Infrastructure.csproj" />
+    </ItemGroup>
 </Project>

@@ -9,12 +9,18 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9"/>
+        <PackageReference Include="Scalar.AspNetCore" Version="2.8.11" />
     </ItemGroup>
 
     <ItemGroup>
       <Content Include="..\..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\shared\WiSave.Income.Contracts\WiSave.Income.Contracts.csproj" />
+      <ProjectReference Include="..\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
