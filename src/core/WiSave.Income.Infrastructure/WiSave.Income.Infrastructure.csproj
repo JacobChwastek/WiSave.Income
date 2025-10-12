@@ -7,16 +7,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj" />
-      <ProjectReference Include="..\WiSave.Income.Application\WiSave.Income.Application.csproj" />
+        <ProjectReference Include="..\..\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj"/>
+        <ProjectReference Include="..\WiSave.Income.Application\WiSave.Income.Application.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Messaging\" />
+        <Folder Include="Messaging\"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4" />
+        <PackageReference Include="KurrentDB.Client" Version="1.0.0"/>
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.5.4"/>
     </ItemGroup>
 
 </Project>

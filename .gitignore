@@ -1,10 +1,174 @@
+## .NET Build Output
 bin/
 obj/
-/packages/
+[Oo]ut/
+[Bb]uild/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa]rm/
+[Aa]rm64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+*.nuget.props
+*.nuget.targets
+.nuget/
+
+## Visual Studio / Rider cache/options
+.vs/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+_ReSharper.Caches/
+*.resharper
+*.resharper.user
+[Rr]e[Ss]harper*/
+*.DotSettings.user
+
+## Rider specific
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
 riderModule.iml
 /_ReSharper.Caches/
+
+## Test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+TestResults/
+codecoverage/
+
+## Publishing
+publish/
+*.Publish.xml
+*.pubxml
+*.pubxml.user
+*.publishproj
+
+## Web
+node_modules/
+npm-debug.log
+yarn-error.log
+wwwroot/dist/
+wwwroot/lib/
+.cache/
+
+## Database
+*.mdf
+*.ldf
+*.ndf
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+## Certificates & Secrets
 certs/
 *.crt
+*.cer
 *.key
 *.pfx
 *.pem
+*.p12
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+*.secrets
+.env
+.env.local
+.env.*.local
+
+## Docker
+.dockerignore
+**/docker-compose.override.yml
+
+## Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+## OS Files
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.swp
+*~
+
+## Backup files
+*.bak
+*.tmp
+*.temp
+
+## Copilot / AI Tools
+.copilot/
+.github/copilot/
+.vscode/
+.cursor/
+
+## Local config
+appsettings.*.local.json
+launchSettings.json
+
+## Rider workspace
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+
+## Rider specific (keep these)
+!.idea/**/contentModel.xml
+!.idea/**/modules.xml
+!.idea/**/vcs.xml
+!.idea/**/indexLayout.xml
+!.idea/**/encodings.xml
+!.idea/**/misc.xml
+!.idea/**/runConfigurations/*.xml
+!.idea/.idea.*.dir/.idea/*.xml
+
+## Package managers
+paket-files/
+
+## BenchmarkDotNet
+BenchmarkDotNet.Artifacts/
+
+## Local History
+.localhistory/
+
+## Windows Installer files
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+## JetBrains Rider
+.idea/**/contentModel.xml
+.idea/**/modules.xml

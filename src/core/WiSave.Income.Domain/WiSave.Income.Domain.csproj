@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\shared\WiSave.Core\WiSave.Core.csproj" />
       <ProjectReference Include="..\..\shared\WiSave.Income.Contracts\WiSave.Income.Contracts.csproj" />
     </ItemGroup>
 

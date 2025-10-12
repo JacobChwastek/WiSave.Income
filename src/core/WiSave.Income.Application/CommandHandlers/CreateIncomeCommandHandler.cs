@@ -1,12 +1,30 @@
 using MassTransit;
+using WiSave.Core.EventStore.Aggregate;
 using WiSave.Income.Contracts.v1.Commands;
+using WiSave.Income.Domain.IncomeSource;
 
 namespace WiSave.Income.Application.CommandHandlers;
 
-public class CreateIncomeCommandHandler : IConsumer<CreateIncome>
+public class CreateIncomeCommandHandler(IAggregateRepository<IncomeSource, IncomeSourceId> repository) : IConsumer<CreateIncome>
 {
     public async Task Consume(ConsumeContext<CreateIncome> context)
     {
-        var message = context.Message;
+         var message = context.Message;
+
+         // var incomeSource = IncomeSource.Create(
+         //     message.IncomeSource.Name,
+         //     message.IncomeSource.Details,
+         //     message.IncomeSource.IsRegular,
+         //     message.IncomeSource.Tags,
+         //     message.Date,
+         //     message.Amount,
+         //     message.Notes,
+         //     message.Tags);
+         //
+         // await repository.Save(incomeSource, context.CancellationToken);
+
+         var xd = new IncomeSourceId(new Guid("0199d9d8-b090-7dae-b2e1-008f4b56a465"));
+         
+         var xdd =  await repository.GetById(xd);
     }
 }
