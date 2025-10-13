@@ -12,9 +12,10 @@
     <Project Path="src\core\WiSave.Income.Domain\WiSave.Income.Domain.csproj" Type="Classic C#" />
     <Project Path="src\core\WiSave.Income.Infrastructure\WiSave.Income.Infrastructure.csproj" Type="Classic C#" />
   </Folder>
-  <Folder Name="/src/projections/" />
+  <Folder Name="/src/projections/">
+    <Project Path="src\projections\WiSave.Income.Projections\WiSave.Income.Projections.csproj" Type="Classic C#" />
+  </Folder>
   <Folder Name="/src/shared/">
-    <Project Path="src\shared\WiSave.Contracts\WiSave.Contracts.csproj" Type="Classic C#" />
     <Project Path="src\shared\WiSave.Core\WiSave.Core.csproj" Type="Classic C#" />
     <Project Path="src\shared\WiSave.Income.Contracts\WiSave.Income.Contracts.csproj" Type="Classic C#" />
     <Project Path="src\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj" Type="Classic C#" />

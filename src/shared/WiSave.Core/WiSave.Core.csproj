@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\WiSave.Contracts\WiSave.Contracts.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="KurrentDB.Client" Version="1.0.0" />
     </ItemGroup>
 

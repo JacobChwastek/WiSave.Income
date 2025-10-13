@@ -1,11 +1,12 @@
 using KurrentDB.Client;
+using MassTransit;
 using WiSave.Core.EventStore.Aggregate;
 using WiSave.Core.EventStore.Mappers;
 using WiSave.Core.EventStore.Serialization;
 
 namespace WiSave.Income.Infrastructure.EventStore.Aggregate;
 
-public class EventStoreAggregateRepository<TAggregate, TIdentity>(KurrentDBClient client) : IAggregateRepository<TAggregate, TIdentity> where TAggregate : Aggregate<TIdentity>, new() where TIdentity : class, IAggregateIdentity
+public class EventStoreAggregateRepository<TAggregate, TIdentity>(KurrentDBClient client, IPublishEndpoint publishEndpoint) : IAggregateRepository<TAggregate, TIdentity> where TAggregate : Aggregate<TIdentity>, new() where TIdentity : class, IAggregateIdentity
 {
     public async Task<TAggregate?> GetById(TIdentity id, CancellationToken cancellationToken = default)
     {
@@ -27,7 +28,7 @@ public class EventStoreAggregateRepository<TAggregate, TIdentity>(KurrentDBClien
             .Where(evt => evt != null)
             .ToListAsync(cancellationToken: cancellationToken);
 
-        if (!events.Any())
+        if (events.Count == 0)
             return null;
 
         var aggregate = new TAggregate();
@@ -52,7 +53,12 @@ public class EventStoreAggregateRepository<TAggregate, TIdentity>(KurrentDBClien
             eventData,
             cancellationToken: ct
         );
-
+        
+        foreach (var @event in uncommittedEvents)
+        {
+            await publishEndpoint.Publish(@event, ct);
+        }
+        
         aggregate.MarkEventsAsCommitted();
     }
 }

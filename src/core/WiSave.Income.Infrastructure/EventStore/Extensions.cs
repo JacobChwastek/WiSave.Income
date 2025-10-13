@@ -16,9 +16,18 @@ public static class Extensions
             var connectionString = config.Database.EventStoreDbConnectionString;
             return new KurrentDBClient(KurrentDBClientSettings.Create(connectionString));
         });
-    
+        
+        services.AddSingleton<KurrentDBPersistentSubscriptionsClient>(sp =>
+        {
+            var config = sp.GetRequiredService<IWiSaveIncomeConfiguration>();
+            var connectionString = config.Database.EventStoreDbConnectionString;
+            
+            var settings = KurrentDBClientSettings.Create(connectionString);
+            return new KurrentDBPersistentSubscriptionsClient(settings);
+        });
+
         services.AddScoped(typeof(IAggregateRepository<,>), typeof(EventStoreAggregateRepository<,>));
-    
+        
         return services;
     }
 }

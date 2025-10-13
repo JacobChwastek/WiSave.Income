@@ -15,7 +15,7 @@ services:
     - "--mode=server"
     - "--frontend-port=57000"
     - "--backend-port=57200"
-    - "--roslyn-worker-port=57442"
+    - "--roslyn-worker-port=57475"
     - "--timeout=60"
     environment:
       DOTNET_USE_POLLING_FILE_WATCHER: "true"
@@ -23,16 +23,16 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "wisave.income.webapi:dev"
     ports:
-    - "127.0.0.1:57042:57000"
-    - "127.0.0.1:57242:57200"
-    - "127.0.0.1:57442:57442"
+    - "127.0.0.1:57075:57000"
+    - "127.0.0.1:57275:57200"
+    - "127.0.0.1:57475:57475"
     volumes:
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income/src/WiSave.Income.WebApi:/app:rw"
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income:/src:rw"
     - "/Users/jakubchwastek/.nuget/packages:/home/app/.nuget/packages"
     - "/Users/jakubchwastek/.local/share/JetBrains/RiderRemoteDebugger/2025.2.3/LinuxArm64:/opt/JetBrains/RiderDebuggerTools"
     - "/Users/jakubchwastek/Applications/Rider.app/Contents/bin/backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
-    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_21_56_30:/var/opt/JetBrains/RiderDebuggerTools:rw"
+    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_23_52_52:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"
   wisave.income.worker.domain:
     build:
@@ -49,7 +49,7 @@ services:
     - "--mode=server"
     - "--frontend-port=57000"
     - "--backend-port=57200"
-    - "--roslyn-worker-port=57443"
+    - "--roslyn-worker-port=57476"
     - "--timeout=60"
     environment:
       DOTNET_ENVIRONMENT: "Development"
@@ -58,16 +58,16 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "wisave.income.worker.domain:dev"
     ports:
-    - "127.0.0.1:57043:57000"
-    - "127.0.0.1:57243:57200"
-    - "127.0.0.1:57443:57443"
+    - "127.0.0.1:57076:57000"
+    - "127.0.0.1:57276:57200"
+    - "127.0.0.1:57476:57476"
     volumes:
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income/src/WiSave.Income.Worker.Domain:/app:rw"
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income:/src:rw"
     - "/Users/jakubchwastek/.nuget/packages:/home/app/.nuget/packages"
     - "/Users/jakubchwastek/.local/share/JetBrains/RiderRemoteDebugger/2025.2.3/LinuxArm64:/opt/JetBrains/RiderDebuggerTools"
     - "/Users/jakubchwastek/Applications/Rider.app/Contents/bin/backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
-    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_21_56_30:/var/opt/JetBrains/RiderDebuggerTools:rw"
+    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_23_52_52:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"
   wisave.income.worker.projections:
     build:
@@ -84,7 +84,7 @@ services:
     - "--mode=server"
     - "--frontend-port=57000"
     - "--backend-port=57200"
-    - "--roslyn-worker-port=57444"
+    - "--roslyn-worker-port=57477"
     - "--timeout=60"
     environment:
       DOTNET_ENVIRONMENT: "Development"
@@ -93,14 +93,14 @@ services:
       RESHARPER_LOG_CONF: "/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
     image: "wisave.income.worker.projections:dev"
     ports:
-    - "127.0.0.1:57044:57000"
-    - "127.0.0.1:57244:57200"
-    - "127.0.0.1:57444:57444"
+    - "127.0.0.1:57077:57000"
+    - "127.0.0.1:57277:57200"
+    - "127.0.0.1:57477:57477"
     volumes:
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income/src/WiSave.Income.Worker.Projections:/app:rw"
     - "/Users/jakubchwastek/Desktop/Projects/WiSave/WiSave.Income:/src:rw"
     - "/Users/jakubchwastek/.nuget/packages:/home/app/.nuget/packages"
     - "/Users/jakubchwastek/.local/share/JetBrains/RiderRemoteDebugger/2025.2.3/LinuxArm64:/opt/JetBrains/RiderDebuggerTools"
     - "/Users/jakubchwastek/Applications/Rider.app/Contents/bin/backend-log.xml:/etc/opt/JetBrains/RiderDebuggerTools/backend-log.xml"
-    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_21_56_30:/var/opt/JetBrains/RiderDebuggerTools:rw"
+    - "/Users/jakubchwastek/Library/Logs/JetBrains/Rider2025.2/DebuggerWorker/JetBrains.Debugger.Worker.2025_10_12_23_52_52:/var/opt/JetBrains/RiderDebuggerTools:rw"
     working_dir: "/app"
