@@ -20,6 +20,8 @@ services:
       - RabbitMQ__VirtualHost=incomes
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
+      - OpenTelemetry__Endpoint=http://wisave-otel-collector:4317
+      - ServiceVersion=1.0.0
     volumes:
       - ./certs:/https:ro
     networks:
@@ -27,8 +29,13 @@ services:
       - income-general-network
       - income-projections-network
     depends_on:
-      - wisave.income.general.db
-      - wisave.income.projections.db
+      wisave.income.general.db:
+        condition: service_healthy
+      wisave.income.projections.db:
+        condition: service_healthy
+    external_links:
+      - wisave-rabbitmq
+      - wisave-otel-collector
 
   wisave.income.worker.domain:
     image: wisave.income.worker.domain
@@ -36,12 +43,15 @@ services:
       context: .
       dockerfile: src/WiSave.Income.Worker.Domain/Dockerfile
     environment:
+      - DOTNET_ENVIRONMENT=Development
       - ConnectionStrings__GeneralDb=Host=wisave.income.general.db;Database=wisave_income;Username=postgres;Password=postgres123
       - ConnectionStrings__EventStoreDb=esdb://wisave.income.eventstore.db:2113?tls=false
       - RabbitMQ__Host=wisave-rabbitmq
       - RabbitMQ__VirtualHost=incomes
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
+      - OpenTelemetry__Endpoint=http://wisave-otel-collector:4317
+      - ServiceVersion=1.0.0
     networks:
       - wisave-network
       - income-general-network
@@ -51,6 +61,9 @@ services:
         condition: service_healthy
       wisave.income.general.db:
         condition: service_healthy
+    external_links:
+      - wisave-rabbitmq
+      - wisave-otel-collector
 
   wisave.income.worker.projections:
     image: wisave.income.worker.projections
@@ -58,21 +71,28 @@ services:
       context: .
       dockerfile: src/WiSave.Income.Worker.Projections/Dockerfile
     environment:
+      - DOTNET_ENVIRONMENT=Development
       - ConnectionStrings__GeneralDb=Host=wisave.income.general.db;Database=wisave_income;Username=postgres;Password=postgres123
       - ConnectionStrings__ProjectionsDb=mongodb://mongo:mongo123@wisave.income.projections.db:27017/wisave_income_projections
       - RabbitMQ__Host=wisave-rabbitmq
       - RabbitMQ__VirtualHost=incomes
       - RabbitMQ__Username=guest
       - RabbitMQ__Password=guest
+      - OpenTelemetry__Endpoint=http://wisave-otel-collector:4317
+      - ServiceVersion=1.0.0
     networks:
       - wisave-network
       - income-general-network
       - income-projections-network
     depends_on:
-      - wisave.income.general.db
-      - wisave.income.projections.db
+      wisave.income.general.db:
+        condition: service_healthy
+      wisave.income.projections.db:
+        condition: service_healthy
+    external_links:
+      - wisave-rabbitmq
+      - wisave-otel-collector
 
-  # Database Services
   wisave.income.general.db:
     image: postgres:16-alpine
     container_name: wisave-income-postgres

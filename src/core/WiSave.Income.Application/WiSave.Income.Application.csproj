@@ -11,6 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\shared\WiSave.Shared.Telemetry\WiSave.Shared.Telemetry.csproj" />
       <ProjectReference Include="..\WiSave.Income.Domain\WiSave.Income.Domain.csproj" />
     </ItemGroup>
 

@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj"/>
+        <ProjectReference Include="..\..\shared\WiSave.Shared.Telemetry\WiSave.Shared.Telemetry.csproj" />
         <ProjectReference Include="..\WiSave.Income.Application\WiSave.Income.Application.csproj"/>
     </ItemGroup>
 

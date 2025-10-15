@@ -19,6 +19,7 @@
     <Project Path="src\shared\WiSave.Core\WiSave.Core.csproj" Type="Classic C#" />
     <Project Path="src\shared\WiSave.Income.Contracts\WiSave.Income.Contracts.csproj" Type="Classic C#" />
     <Project Path="src\shared\WiSave.Shared.Income.Infrastructure\WiSave.Shared.Income.Infrastructure.csproj" Type="Classic C#" />
+    <Project Path="src\shared\WiSave.Shared.Telemetry\WiSave.Shared.Telemetry.csproj" Type="Classic C#" />
   </Folder>
   <Folder Name="/tests/" />
 </Solution>

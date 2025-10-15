@@ -2,14 +2,22 @@ using MassTransit;
 using WiSave.Core.EventStore.Aggregate;
 using WiSave.Income.Contracts.v1.Commands;
 using WiSave.Income.Domain.IncomeSource;
+using WiSave.Shared.Telemetry;
 
 namespace WiSave.Income.Application.CommandHandlers;
 
-public class CreateIncomeCommandHandler(IAggregateRepository<IncomeSource, IncomeSourceId> repository) : IConsumer<CreateIncome>
+public class CreateIncomeCommandHandler(IAggregateRepository<IncomeSource, IncomeSourceId> repository,  IActivitySourceProvider activitySourceProvider) : IConsumer<CreateIncome>
 {
     public async Task Consume(ConsumeContext<CreateIncome> context)
     {
-         var message = context.Message;
+        using var activity = activitySourceProvider.Source.StartActivity(nameof(CreateIncomeCommandHandler));
+        var message = context.Message;
+        
+        activity?.SetTag(WiSaveTelemetryTags.Commands.CommandType, nameof(CreateIncome));
+        activity?.SetTag(WiSaveTelemetryTags.Commands.CommandId, context.MessageId?.ToString());
+        activity?.SetTag("income.amount", message.Amount);
+        activity?.SetTag("income_source.name", message.IncomeSource.Name);
+        
 
          var incomeSource = IncomeSource.Create(
              message.IncomeSource.Name,
